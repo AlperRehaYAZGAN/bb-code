@@ -68,28 +68,19 @@ RUN set -eux \
     curl \
     git \
     ripgrep \
-    # npm \
     # -- system \
-    # dbus \
-    # gnupg \
-    # make \
-    # libx11-dev \
-    # libxkbfile-dev \
-    # libc-dev \
     libssl-dev \
     # -- custom \
     jq \
     # -- logging \
-    # openssh-client \
+    openssh-client \
     asciinema \
     ttyd \
     neovim \
     tmux \
     screen \
-    # websocat \
-    # nodejs \
     " \
-    && apt install -y ${PACKAGES}
+    && apt install --no-install-recommends -y ${PACKAGES}
 
 # rename binaries to aliases  (asciinema->bb-logger, ttyd->bb-terminal, nvim->vim)
 RUN mv /usr/bin/asciinema /usr/bin/bb-logger
@@ -97,10 +88,11 @@ RUN mv /usr/bin/ttyd /usr/bin/bb-terminal
 RUN mv /usr/bin/websocat /usr/bin/bb-streamer
 RUN mv /usr/bin/nvim /usr/bin/vim
 
-# Clear cachse and unnecessary files and apk cache
+# Clear cache and unnecessary files and apk cache
 RUN rm -rf /var/cache/apk/* \
     && rm -rf /tmp/* \
-    && rm -rf /var/tmp/*
+    && rm -rf /var/tmp/* \
+    && rm -rf /var/lib/apt/lists/*
 
 # Terminal Port is 40020
 USER root

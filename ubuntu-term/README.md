@@ -1,11 +1,16 @@
-#### Commands
-
-docker buildx build --platform linux/amd64 --memory 12 -t alperreha/bb-code:ubuntu22.04-term-ide-0.0.1 .
-
-docker run --runtime=sysbox-runc -it --rm -P -p 3030:3030 -p 40020:40020 --name=alpine-theia alperreha/bb-code:alpine3.19-term-ide-0.0.1
-docker run -it --rm -p 3030:3030 -p 40020:40020 --name=ubuntu-code -d alperreha/bb-code:ubuntu22.04-term-ide-0.0.1
+#### Ubuntu 22.04 Terminal
 
 
+### Build and Run
+
+```bash
+# build
+docker buildx build --platform linux/amd64 --memory 12 -t alperreha/bb-ubuntu:22.04-term-v0.0.1 .
+docker build -t alperreha/bb-ubuntu:22.04-term-v0.0.1 .
+
+# run
+docker run --runtime=sysbox-runc -it --rm -p 40020:40020 --name=bb-alpine3.19-term-0.0.1 alperreha/bb-ubuntu:22.04-term-v0.0.1
+```
 ### Version Upgrades
 
 - [x] 2.0.0: Websocat SSL error fix by adding package "apk add libressl-dev".

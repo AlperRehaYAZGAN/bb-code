@@ -9,8 +9,6 @@ RUN apt-get update && \
     apt-get install -y make gcc g++ python3 libx11-dev libxkbfile-dev libc-dev libssl-dev curl gnupg git openssl rustc cargo
 
 
-RUN npm i -g @vscode/spdlog
-
 WORKDIR /tmp
 
 # websocat build from source:
@@ -28,13 +26,13 @@ RUN cargo build --release --features=ssl
 FROM nestybox/ubuntu-jammy-systemd:latest as deploy
 
 LABEL org.opencontainers.image.authors="Alper Reha YAZGAN" \
-    org.opencontainers.image.description="Bulut Bilisimciler Hands-on Lab IDE Environment - Alpine with ttyd, asciinema, websocat and some utilities" \
+    org.opencontainers.image.description="Bulut Bilisimciler Hands-on Lab IDE Environment - Ubuntu 22.04 with ttyd, asciinema, websocat and some utilities" \
     org.opencontainers.image.documentation="https://bulutbilisimciler.com" \
     org.opencontainers.image.licenses="MIT" \
     org.opencontainers.image.title="Bulut Bilisimciler Alpine Terminal-IDE" \
     org.opencontainers.image.url="https://bulutbilisimciler.com" \
     org.opencontainers.image.vendor="TT" \
-    org.opencontainers.image.version="2.0.0"
+    org.opencontainers.image.version="0.0.1"
 
 # Predefined env variables
 ENV TERM=xterm \
@@ -56,7 +54,7 @@ ADD ./mounts/motd /etc/motd
 COPY --from=build /tmp/websocat/target/release/websocat /usr/bin/websocat
 
 # Update and upgrade
-RUN apt-get update && \
+RUN apt-get update -y && \
     apt-get upgrade -y
 
 # Install packages
@@ -70,11 +68,11 @@ RUN set -eux \
     curl \
     git \
     ripgrep \
-    npm \
+    # npm \
     # -- system \
     # dbus \
     # gnupg \
-    make \
+    # make \
     # libx11-dev \
     # libxkbfile-dev \
     libc-dev \
@@ -89,7 +87,7 @@ RUN set -eux \
     tmux \
     screen \
     # websocat \
-    nodejs \
+    # nodejs \
     " \
     && apt install -y ${PACKAGES}
 
@@ -99,61 +97,6 @@ RUN mv /usr/bin/ttyd /usr/bin/bb-terminal
 RUN mv /usr/bin/websocat /usr/bin/bb-streamer
 RUN mv /usr/bin/nvim /usr/bin/vim
 
-# section: install editor
-ENV RELEASE_TAG="openvscode-server-v1.90.2" \
-    RELEASE_ORG="gitpod-io" \
-    CODE_ROOT="/root/.ide"
-
-# create and set download dir
-RUN mkdir -p ${CODE_ROOT} \
-    && mkdir -p ${CODE_ROOT}/client-data \
-    && mkdir -p ${CODE_ROOT}/server-data
-
-# Downloading the latest VSC Server release and extracting the release archive
-WORKDIR ${HOME}
-RUN if [ -z "${RELEASE_TAG}" ]; then \
-    echo "The RELEASE_TAG build arg must be set." >&2 && \
-    exit 1; \
-    fi && \
-    arch=$(uname -m) && \
-    if [ "${arch}" = "x86_64" ]; then \
-    arch="x64"; \
-    elif [ "${arch}" = "aarch64" ]; then \
-    arch="arm64"; \
-    elif [ "${arch}" = "armv7l" ]; then \
-    arch="armhf"; \
-    fi && \
-    wget https://github.com/${RELEASE_ORG}/openvscode-server/releases/download/${RELEASE_TAG}/${RELEASE_TAG}-linux-${arch}.tar.gz && \
-    tar -xzf ${RELEASE_TAG}-linux-${arch}.tar.gz -C ${HOME} && \
-    mv ${HOME}/${RELEASE_TAG}-linux-${arch} ${CODE_ROOT}/app && \
-    rm -f ${HOME}/${RELEASE_TAG}-linux-${arch}.tar.gz \
-    # ADDITION: in this openvscode server node is not executable. Remove it and use current
-    rm -rf ${CODE_ROOT}/app/node
-
-# cp /usr/local/lib/node_modules/@vscode/spdlog/build/Release/spdlog.node /root/.openvscode-server/node_modules/@vscode/spdlog/build/Release/spdlog.node
-COPY --from=build /usr/local/lib/node_modules/@vscode/spdlog/build/Release/spdlog.node \
-    ${CODE_ROOT}/app/node_modules/@vscode/spdlog/build/Release/spdlog.node
-
-# install extensions
-ADD ./mounts/extensions.mini.json /tmp/extensions.json
-
-SHELL ["/bin/bash", "-c"]
-RUN urls=($(jq -r '.[] | .url' /tmp/extensions.json))\
-    # Create a tmp dir for downloading
-    && tdir=/tmp/exts && mkdir -p "${tdir}" && cd "${tdir}" \
-    # Download via wget from $urls array.
-    && wget "${urls[@]}" && \
-    # List the extensions in this array
-    exts=(\
-    # From filesystem, .vsix that we downloaded (using bash wildcard '*')
-    # "${tdir}"/* \
-    # From filesystem, .vsix that we downloaded (using find)
-    $(find "${tdir}" -type f -name "*.vsix") \
-    )\
-    # Install the $exts
-    && echo "Installing extensions: ${exts[@]}" \ 
-    # for ext in "${exts[@]}"; do /usr/bin/node ${CODE_ROOT}/app/out/server-main.js --extensions-dir ${CODE_ROOT}/app/extensions --install-extension "${ext}"; done 
-
 # Clear cachse and unnecessary files and apk cache
 RUN rm -rf /var/cache/apk/* \
     && rm -rf /tmp/* \
@@ -162,7 +105,6 @@ RUN rm -rf /var/cache/apk/* \
 # Terminal Port is 40020
 USER root
 EXPOSE 40020
-EXPOSE 3030
 RUN mkdir -p /root/workspace
 WORKDIR /root/workspace
 

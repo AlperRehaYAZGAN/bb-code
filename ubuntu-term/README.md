@@ -9,7 +9,7 @@ docker buildx build --platform linux/amd64 --memory 12 -t alperreha/bb-ubuntu:22
 docker build -t alperreha/bb-ubuntu:22.04-term-v0.0.1 .
 
 # run
-docker run --runtime=sysbox-runc -it --rm -p 40020:40020 --name=bb-alpine3.19-term-0.0.1 alperreha/bb-ubuntu:22.04-term-v0.0.1
+docker run --runtime=sysbox-runc -it --rm -p 40020:40020 --name=ubuntu22.04-term-0.0.1 alperreha/bb-ubuntu:22.04-term-v0.0.1
 ```
 ### Version Upgrades
 

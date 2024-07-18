@@ -75,12 +75,12 @@ RUN set -eux \
     # make \
     # libx11-dev \
     # libxkbfile-dev \
-    libc-dev \
+    # libc-dev \
     libssl-dev \
     # -- custom \
     jq \
     # -- logging \
-    openssh-client \
+    # openssh-client \
     asciinema \
     ttyd \
     neovim \

@@ -92,8 +92,8 @@ RUN mv /usr/bin/nvim /usr/bin/vim
 RUN rm -rf /var/cache/apk/* \
     && rm -rf /tmp/* \
     && rm -rf /var/tmp/* \
-    && rm -rf /var/lib/apt/lists/* \
     && apt-get clean
+    # && rm -rf /var/lib/apt/lists/* \
 
 # Terminal Port is 40020
 USER root

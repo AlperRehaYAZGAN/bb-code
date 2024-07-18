@@ -81,7 +81,7 @@ RUN set -eux \
     " \
     && apt install -y ${PACKAGES} \
     && apt-get clean \
-    rm -rf /var/cache/apk/* \
+    && rm -rf /var/cache/apk/* \
     && rm -rf /tmp/* \
     && rm -rf /var/tmp/* \
     && rm -rf /var/lib/apt/lists/* 

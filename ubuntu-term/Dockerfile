@@ -1,13 +1,22 @@
 # Dockerfile
 # Author: Alper Reha YAZGAN
-# alperreha/bb-code:ubuntu22.04-term-ide-1.0.0
+# alperreha/bb-ubuntu:22.04-term-v0.0.1
+FROM rust:1.72-slim-buster as build
 
-FROM node:18 as build
+# Predefined env variables
+ENV TERM=xterm \
+    LANGUAGE=en_US.UTF-8 \
+    LC_ALL=C.UTF-8 \
+    LANG=C.UTF-8 \
+    TZ="Europe/Istanbul" \
+    DEBIAN_FRONTEND=noninteractive \
+    USE_LOCAL_GIT=true \
+    SHELL=/bin/bash \
+    HOME=/root
 
-## ALpine
-RUN apt-get update && \
-    apt-get install -y make gcc g++ python3 libx11-dev libxkbfile-dev libc-dev libssl-dev curl gnupg git openssl rustc cargo
-
+    ## debian based
+RUN apt update -y && \
+    apt install -y make gcc g++ python3 libx11-dev libxkbfile-dev libc-dev libssl-dev curl gnupg git openssl
 
 WORKDIR /tmp
 

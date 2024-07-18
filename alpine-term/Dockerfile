@@ -85,8 +85,7 @@ RUN set -eux \
     neovim \
     tmux \
     screen \
-    # s3cmd \
-    # websocat \
+    libressl-dev \
     " \
     && apk add --no-cache ${PACKAGES}
 

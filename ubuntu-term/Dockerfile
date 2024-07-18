@@ -22,7 +22,7 @@ WORKDIR /tmp/websocat
 
 RUN cargo build --release --features=ssl
 
-# stage 3 - deploy
+# stage 2 - deploy
 FROM nestybox/ubuntu-jammy-systemd:latest as deploy
 
 LABEL org.opencontainers.image.authors="Alper Reha YAZGAN" \
@@ -81,11 +81,12 @@ RUN set -eux \
     screen \
     " \
     && apt install -y ${PACKAGES} \
-    && apt-get clean \
-    && rm -rf /var/cache/apt/archives/* \
+    && apt-get clean 
+
+# clean apt
+RUN rm -rf /var/cache/apt/archives/* \
     && rm -rf /tmp/* \
-    && rm -rf /var/lib/apt/lists/* \
-    && apt-get clean
+    && rm -rf /var/lib/apt/lists/*
 
 # rename binaries to aliases  (asciinema->bb-logger, ttyd->bb-terminal, nvim->vim)
 RUN mv /usr/bin/asciinema /usr/bin/bb-logger

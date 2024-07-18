@@ -14,9 +14,9 @@ ENV TERM=xterm \
     SHELL=/bin/bash \
     HOME=/root
 
-    ## debian based
+## debian based
 RUN apt update -y && \
-    apt install -y make gcc g++ python3 libx11-dev libxkbfile-dev libc-dev libssl-dev curl gnupg git openssl
+    apt install -y make gcc g++ python3 libx11-dev libxkbfile-dev libc-dev libssl-dev curl libssl-dev pkg-config gnupg git openssl
 
 WORKDIR /tmp
 

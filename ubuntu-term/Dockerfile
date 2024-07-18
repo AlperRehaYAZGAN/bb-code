@@ -1,22 +1,12 @@
 # Dockerfile
 # Author: Alper Reha YAZGAN
 # alperreha/bb-ubuntu:22.04-term-v0.0.1
-FROM rust:1.72-slim-buster as build
+FROM node:18 as build
 
-# Predefined env variables
-ENV TERM=xterm \
-    LANGUAGE=en_US.UTF-8 \
-    LC_ALL=C.UTF-8 \
-    LANG=C.UTF-8 \
-    TZ="Europe/Istanbul" \
-    DEBIAN_FRONTEND=noninteractive \
-    USE_LOCAL_GIT=true \
-    SHELL=/bin/bash \
-    HOME=/root
+## ALpine
+RUN apt-get update && \
+    apt-get install -y make gcc g++ python3 libx11-dev libxkbfile-dev libc-dev libssl-dev curl gnupg git openssl rustc cargo
 
-## debian based
-RUN apt update -y && \
-    apt install -y make gcc g++ python3 libx11-dev libxkbfile-dev libc-dev libssl-dev curl libssl-dev pkg-config gnupg git openssl
 
 WORKDIR /tmp
 
@@ -38,10 +28,10 @@ LABEL org.opencontainers.image.authors="Alper Reha YAZGAN" \
     org.opencontainers.image.description="Bulut Bilisimciler Hands-on Lab IDE Environment - Ubuntu 22.04 with ttyd, asciinema, websocat and some utilities" \
     org.opencontainers.image.documentation="https://bulutbilisimciler.com" \
     org.opencontainers.image.licenses="MIT" \
-    org.opencontainers.image.title="Bulut Bilisimciler Alpine Terminal-IDE" \
+    org.opencontainers.image.title="Bulut Bilisimciler Ubuntu Terminal" \
     org.opencontainers.image.url="https://bulutbilisimciler.com" \
     org.opencontainers.image.vendor="TT" \
-    org.opencontainers.image.version="0.0.1"
+    org.opencontainers.image.version="1.0.0"
 
 # Predefined env variables
 ENV TERM=xterm \
@@ -92,10 +82,12 @@ RUN set -eux \
     && apt install -y ${PACKAGES} \
     && apt-get clean 
 
-# clean apt
-RUN rm -rf /var/cache/apt/archives/* \
+# Clear cache and unnecessary files and apk cache
+RUN rm -rf /var/cache/apk/* \
     && rm -rf /tmp/* \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/tmp/* \
+    && apt-get clean
+    # && rm -rf /var/lib/apt/lists/* \
 
 # rename binaries to aliases  (asciinema->bb-logger, ttyd->bb-terminal, nvim->vim)
 RUN mv /usr/bin/asciinema /usr/bin/bb-logger

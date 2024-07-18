@@ -7,6 +7,7 @@ This is the alpine-ttyd image. It is based on the alpine image and has the ttyd 
 ```bash
 # build
 docker buildx build --platform linux/amd64 --memory 12 -t alperreha/bb-alpine:3.19-term-v0.0.1 .
+docker build -t alperreha/bb-alpine:3.19-term-v0.0.1 .
 
 # run
 docker run --runtime=sysbox-runc -it --rm -p 40020:40020 --name=bb-alpine3.19-term-0.0.1 alperreha/bb-alpine:3.19-term-v0.0.1

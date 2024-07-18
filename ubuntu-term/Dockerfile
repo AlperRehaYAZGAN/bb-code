@@ -80,7 +80,12 @@ RUN set -eux \
     tmux \
     screen \
     " \
-    && apt install -y ${PACKAGES}
+    && apt install -y ${PACKAGES} \
+    && apt-get clean \
+    && rm -rf /var/cache/apt/archives/* \
+    && rm -rf /tmp/* \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
 
 # rename binaries to aliases  (asciinema->bb-logger, ttyd->bb-terminal, nvim->vim)
 RUN mv /usr/bin/asciinema /usr/bin/bb-logger
@@ -89,11 +94,6 @@ RUN mv /usr/bin/websocat /usr/bin/bb-streamer
 RUN mv /usr/bin/nvim /usr/bin/vim
 
 # Clear cache and unnecessary files and apk cache
-RUN rm -rf /var/cache/apk/* \
-    && rm -rf /tmp/* \
-    && rm -rf /var/tmp/* \
-    && apt-get clean
-    # && rm -rf /var/lib/apt/lists/* \
 
 # Terminal Port is 40020
 USER root

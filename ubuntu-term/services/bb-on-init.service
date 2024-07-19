@@ -1,5 +1,5 @@
 [Unit]
-Description=bulutbilisimciler-terminal-v1.0.0
+Description=bulutbilisimciler-on-init-helper-v1.0.0
 After=network.target
 
 [Service]

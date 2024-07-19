@@ -86,7 +86,7 @@ RUN set -eux \
 RUN rm -rf /var/cache/apk/* \
     && rm -rf /tmp/* \
     && rm -rf /var/tmp/* \
-    && rm -rf /var/lib/apt/lists/* \
+    # && rm -rf /var/lib/apt/lists/* \
     && apt-get clean
 
 # rename binaries to aliases  (asciinema->bb-logger, ttyd->bb-terminal, nvim->vim)

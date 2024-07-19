@@ -7,7 +7,7 @@ FROM node:18 as build
 RUN apt-get update && \
     apt-get install -y make gcc g++ python3 libx11-dev libxkbfile-dev libc-dev libssl-dev curl gnupg git openssl rustc cargo
 
-
+# use temporary directory
 WORKDIR /tmp
 
 # websocat build from source:
@@ -80,21 +80,17 @@ RUN set -eux \
     screen \
     " \
     && apt install -y ${PACKAGES} \
-    && apt-get clean \
-    && rm -rf /var/cache/apk/* \
+    && apt-get clean 
+
+# Clear cache and unnecessary files and apk cache
+RUN rm -rf /var/cache/apk/* \
     && rm -rf /tmp/* \
     && rm -rf /var/tmp/* \
-    && rm -rf /var/lib/apt/lists/* 
+    && apt-get clean
+# && rm -rf /var/lib/apt/lists/* \
 
-    # Clear cache and unnecessary files and apk cache
-    # RUN rm -rf /var/cache/apk/* \
-    #     && rm -rf /tmp/* \
-    #     && rm -rf /var/tmp/* \
-    #     && apt-get clean
-    # && rm -rf /var/lib/apt/lists/* \
-
-    # rename binaries to aliases  (asciinema->bb-logger, ttyd->bb-terminal, nvim->vim)
-    RUN mv /usr/bin/asciinema /usr/bin/bb-logger
+# rename binaries to aliases  (asciinema->bb-logger, ttyd->bb-terminal, nvim->vim)
+RUN mv /usr/bin/asciinema /usr/bin/bb-logger
 RUN mv /usr/bin/ttyd /usr/bin/bb-terminal
 RUN mv /usr/bin/websocat /usr/bin/bb-streamer
 RUN mv /usr/bin/nvim /usr/bin/vim

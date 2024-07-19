@@ -24,13 +24,13 @@ RUN cargo build --release --features=ssl
 FROM alpine:3.19 as deploy
 
 LABEL org.opencontainers.image.authors="Alper Reha YAZGAN" \
-    org.opencontainers.image.description="Bulut Bilisimciler Hands-on Lab Environment - Alpine with ttyd, asciinema and some utilities" \
+    org.opencontainers.image.description="Bulut Bilisimciler Hands-on Lab Environment - Alpine with ttyd, asciinema, websocat and some utilities" \
     org.opencontainers.image.documentation="https://bulutbilisimciler.com" \
     org.opencontainers.image.licenses="GPL v2.0" \
     org.opencontainers.image.title="Bulut Bilisimciler Alpine Terminal-Only" \
     org.opencontainers.image.url="https://bulutbilisimciler.com" \
     org.opencontainers.image.vendor="TT" \
-    org.opencontainers.image.version="0.0.1"
+    org.opencontainers.image.version="1.0.0"
 
 # Predefined env variables
 ENV TERM=xterm \
@@ -78,6 +78,7 @@ RUN set -eux \
     libsecret \
     # -- custom \
     jq \
+    libressl-dev \
     # -- logging \
     openssh-client \
     asciinema \
@@ -85,7 +86,6 @@ RUN set -eux \
     neovim \
     tmux \
     screen \
-    libressl-dev \
     " \
     && apk add --no-cache ${PACKAGES}
 

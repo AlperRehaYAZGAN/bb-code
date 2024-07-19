@@ -4,8 +4,8 @@ After=network.target
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/bb-terminal-service.sh
-ExecReload=/usr/bin/bb-terminal-service.sh
+ExecStart=/usr/bin/bb-on-init-service.sh
+ExecReload=/usr/bin/bb-on-init-service.sh
 WorkingDirectory=/root/workspace
 Restart=always
 RestartSec=3

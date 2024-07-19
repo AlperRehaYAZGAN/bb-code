@@ -101,6 +101,16 @@ EXPOSE 40020
 RUN mkdir -p /root/workspace
 WORKDIR /root/workspace
 
+# Service 1 - on-init-helper service
+COPY ./services/bb-on-init-service.sh /usr/bin/
+COPY ./services/bb-on-init.service /lib/systemd/system/
+
+# Link service to systemd
+RUN chmod +x /usr/bin/bb-on-init-service.sh && \
+    ln -sf /lib/systemd/system/bb-on-init.service \
+    /etc/systemd/system/multi-user.target.wants/bb-on-init.service
+
+# Service 2 - terminal service
 # Inject BB Terminal Service
 COPY ./services/bb-terminal-service.sh /usr/bin/
 COPY ./services/bb-terminal.service /lib/systemd/system/

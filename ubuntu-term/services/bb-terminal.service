@@ -1,0 +1,12 @@
+[Unit]
+Description=bulutbilisimciler-terminal-v1.0.0
+After=docker.service
+StartLimitIntervalSec=0
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/bb-terminal-service.sh
+ExecReload=/usr/bin/bb-terminal-service.sh
+
+[Install]
+WantedBy=multi-user.target

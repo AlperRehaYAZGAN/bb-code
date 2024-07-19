@@ -1,6 +1,6 @@
 # Dockerfile
 # Author: Alper Reha YAZGAN
-# alperreha/bb-ubuntu:22.04-term-v0.0.1
+# alperreha/bb-ubuntu:22.04-term-v1.0.0
 FROM node:18 as build
 
 ## ALpine
@@ -86,8 +86,8 @@ RUN set -eux \
 RUN rm -rf /var/cache/apk/* \
     && rm -rf /tmp/* \
     && rm -rf /var/tmp/* \
+    && rm -rf /var/lib/apt/lists/* \
     && apt-get clean
-# && rm -rf /var/lib/apt/lists/* \
 
 # rename binaries to aliases  (asciinema->bb-logger, ttyd->bb-terminal, nvim->vim)
 RUN mv /usr/bin/asciinema /usr/bin/bb-logger
@@ -95,17 +95,17 @@ RUN mv /usr/bin/ttyd /usr/bin/bb-terminal
 RUN mv /usr/bin/websocat /usr/bin/bb-streamer
 RUN mv /usr/bin/nvim /usr/bin/vim
 
-# Clear cache and unnecessary files and apk cache
-
 # Terminal Port is 40020
 USER root
 EXPOSE 40020
 RUN mkdir -p /root/workspace
 WORKDIR /root/workspace
 
-# Start the bb-terminal server
-# bash -c while true; do /usr/bin/bb-terminal -p 40020 -m 64 --writable -t disableLeaveAlert=true bash; done
-# CMD 1 - Run Node App: /usr/bin/node /root/.ide/app/out/server-main.js --port 3030 --host 0.0.0.0 --default-workspace /root/workspace --default-folder /root/workspace --disable-workspace-trust --accept-server-license-terms --disable-telemetry --server-data-dir /root/.ide/server-data --user-data-dir /root/.ide/client-data --without-connection-token
-# CMD 2 - Run TTYd Server: ttyd -p 40020 -m 64 --writable -t disableLeaveAlert=true bash
-# CMD-3 - Delete Code Terminals: bash -c "while true; do kill -9 $(ps aux | grep '\-\-type=ptyHost' | awk '{print $1}'); sleep 3; done"
-CMD [ "bash", "-c", "while true; do /usr/bin/bb-terminal -p 40020 -m 64 --writable -t disableLeaveAlert=true bash; done" ]
+# Inject BB Terminal Service
+COPY ./services/bb-terminal-service.sh /usr/bin/
+COPY ./services/bb-terminal.service /lib/systemd/system/
+
+# Link service to systemd
+RUN chmod +x /usr/bin/bb-terminal-service.sh && \
+    ln -sf /lib/systemd/system/bb-terminal.service \
+    /etc/systemd/system/multi-user.target.wants/bb-terminal.service

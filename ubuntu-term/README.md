@@ -1,19 +1,22 @@
-#### Ubuntu 22.04 Terminal
+### ubuntu-term
 
+This is the ubuntu-term image. It is based on the ubuntu:22.04 image and has the ttyd installed. It is used to run the terminal in the browser.
 
 ### Build and Run
 
 ```bash
+# buildx
+docker buildx build --platform linux/amd64 --memory 12 -t alperreha/bb-ubuntu:22.04-term-v1.0.0 .
 # build
-docker buildx build --platform linux/amd64 --memory 12 -t alperreha/bb-ubuntu:22.04-term-v0.0.1 .
-docker build -t alperreha/bb-ubuntu:22.04-term-v0.0.1 .
+docker build --platform linux/amd64 -t alperreha/bb-ubuntu:22.04-term-v1.0.0 .
 
 # run
-docker run --runtime=sysbox-runc -it --rm -p 40020:40020 --name=ubuntu22.04-term-0.0.1 alperreha/bb-ubuntu:22.04-term-v0.0.1
+docker run --runtime=sysbox-runc --privileged -it --rm -p 40020:40020 --name=bb-ubuntu22.04-term-1.0.0 alperreha/bb-ubuntu:22.04-term-v1.0.0
 ```
-### Version Upgrades
 
-- [x] 2.0.0: Websocat SSL error fix by adding package "apk add libressl-dev".
-- [x] 1.1.9: Websocat and TTYd "apk add" added.
-- [x] 1.1.4: Extensions and sidebar menus added.
-- [x] 1.1.5: Webview err fix.
+
+### Changelog
+
+- [x] 1.0.0: ttyd, websocat, tmux, screen, asciinema, neovim installed and boilerplate ready.
+  This release supports "systemctl" commands due to container starts with "/sbin/init".
+  

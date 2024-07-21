@@ -28,7 +28,7 @@ LABEL org.opencontainers.image.authors="Alper Reha YAZGAN" \
     org.opencontainers.image.description="Bulut Bilisimciler Hands-on Lab IDE Environment - Ubuntu 22.04 with ttyd, asciinema, websocat and some utilities" \
     org.opencontainers.image.documentation="https://bulutbilisimciler.com" \
     org.opencontainers.image.licenses="MIT" \
-    org.opencontainers.image.title="Bulut Bilisimciler Ubuntu Terminal" \
+    org.opencontainers.image.title="Bulut Bilisimciler Ubuntu 22.04 Terminal" \
     org.opencontainers.image.url="https://bulutbilisimciler.com" \
     org.opencontainers.image.vendor="TT" \
     org.opencontainers.image.version="1.0.0"
@@ -101,17 +101,16 @@ EXPOSE 40020
 RUN mkdir -p /root/workspace
 WORKDIR /root/workspace
 
-# Service 1 - on-init-helper service
+# Service 1 -1 - on-init-helper service
 COPY ./services/bb-on-init-service.sh /usr/bin/
 COPY ./services/bb-on-init.service /lib/systemd/system/
 
-# Link service to systemd
+# Service 1 -2 - Link service to systemd
 RUN chmod +x /usr/bin/bb-on-init-service.sh && \
     ln -sf /lib/systemd/system/bb-on-init.service \
     /etc/systemd/system/multi-user.target.wants/bb-on-init.service
 
 # Service 2 - terminal service
-# Inject BB Terminal Service
 COPY ./services/bb-terminal-service.sh /usr/bin/
 COPY ./services/bb-terminal.service /lib/systemd/system/
 

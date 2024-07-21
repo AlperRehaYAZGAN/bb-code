@@ -5,8 +5,9 @@ StartLimitIntervalSec=0
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/bb-on-init-service.sh
-ExecReload=/usr/bin/bb-on-init-service.sh
+ExecStart=/usr/bin/bb-on-init.sh
+ExecReload=/usr/bin/bb-on-init.sh
+WorkingDirectory=/root/workspace
 
 [Install]
 WantedBy=multi-user.target

@@ -19,7 +19,7 @@ RUN dnf install epel-release -y \
     && dnf install cmake gcc make curl clang -y
 
 # Install rust
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
 # use temporary directory
 WORKDIR /tmp

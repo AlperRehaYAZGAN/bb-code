@@ -22,7 +22,60 @@ WORKDIR /tmp/websocat
 RUN cargo build --release --features=ssl
 
 # stage 2 - deploy
-FROM nestybox/ubuntu-jammy-systemd:latest as deploy
+# https://github.com/nestybox/dockerfiles/blob/master/ubuntu-jammy-systemd/Dockerfile
+###################################### Boilerplate START ######################################
+FROM ubuntu:jammy as deploy
+
+#
+# Systemd installation
+#
+RUN apt-get update &&                            \
+    apt-get install -y --no-install-recommends   \
+    systemd                              \
+    systemd-sysv                         \
+    libsystemd0                          \
+    ca-certificates                      \
+    dbus                                 \
+    iptables                             \
+    iproute2                             \
+    kmod                                 \
+    locales                              \
+    sudo                                 \
+    udev &&                              \
+    \
+    # Prevents journald from reading kernel messages from /dev/kmsg
+    echo "ReadKMsg=no" >> /etc/systemd/journald.conf &&               \
+    \
+    # Housekeeping
+    apt-get clean -y &&                                               \
+    rm -rf                                                            \
+    /var/cache/debconf/*                                           \
+    /var/lib/apt/lists/*                                           \
+    /var/log/*                                                     \
+    /tmp/*                                                         \
+    /var/tmp/*                                                     \
+    /usr/share/doc/*                                               \
+    /usr/share/man/*                                               \
+    /usr/share/local/* &&                                          \
+    \
+    # Create default 'admin/admin' user
+    useradd --create-home --shell /bin/bash admin && echo "admin:admin" | chpasswd && adduser admin sudo
+
+# Disable systemd services/units that are unnecessary within a container.
+RUN systemctl mask systemd-udevd.service \
+    systemd-udevd-kernel.socket \
+    systemd-udevd-control.socket \
+    systemd-modules-load.service \
+    sys-kernel-debug.mount \
+    sys-kernel-tracing.mount
+
+# Make use of stopsignal (instead of sigterm) to stop systemd containers.
+STOPSIGNAL SIGRTMIN+3
+
+# BELOW CODE IS COMMENTED: This image is 2 years old and not maintained. Re-create ,mage from Dockerfile
+# https://github.com/nestybox/dockerfiles/blob/master/ubuntu-jammy-systemd/Dockerfile
+# FROM nestybox/ubuntu-jammy-systemd:latest as deploy
+###################################### Boilerplate END ######################################
 
 LABEL org.opencontainers.image.authors="Alper Reha YAZGAN" \
     org.opencontainers.image.description="Bulut Bilisimciler Hands-on Lab IDE Environment - Ubuntu 22.04 with ttyd, asciinema, websocat and some utilities" \
@@ -124,3 +177,6 @@ COPY ./services/bb-terminal.service /lib/systemd/system/
 RUN chmod +x /usr/bin/bb-terminal.sh && \
     ln -sf /lib/systemd/system/bb-terminal.service \
     /etc/systemd/system/multi-user.target.wants/bb-terminal.service
+
+# Set systemd as entrypoint.
+ENTRYPOINT [ "/sbin/init", "--log-level=err" ]

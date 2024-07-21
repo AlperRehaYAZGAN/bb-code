@@ -1,6 +1,6 @@
 # Dockerfile
 # Author: Alper Reha YAZGAN
-# alperreha/bb:alpine3.19-term-2.0.0
+# alperreha/bb-alpine:3.19-term-v2.0.0
 # stage 1 - build
 FROM node:18-alpine3.19 as build
 
@@ -52,8 +52,8 @@ ADD ./mounts/bash.bashrc ${HOME}/.bashrc
 ADD ./mounts/bash.bashrc ${HOME}/.bash_profile
 
 # motd and websocat
-ADD ./mounts/motd /root/workspace/motd
-ADD ./mounts/motd /etc/motd
+ADD https://gitlab.bulutbilisimciler.com/bb-public/playground-init/-/raw/main/motd /root/workspace/motd
+ADD https://gitlab.bulutbilisimciler.com/bb-public/playground-init/-/raw/main/motd /etc/motd
 COPY --from=build /tmp/websocat/target/release/websocat /usr/bin/websocat
 
 # supervisor confs
@@ -100,7 +100,7 @@ RUN set -eux \
     # -- logging \
     openssh-client \
     asciinema \
-    ttyd \
+    # ttyd \
     neovim \
     tmux \
     screen \
@@ -109,9 +109,18 @@ RUN set -eux \
     " \
     && apk add --no-cache ${PACKAGES}
 
+# Install ttyd manually due to Ubuntu apt installs old version. 
+# it uses old version but we need latest. 
+# e.g. https://manpages.ubuntu.com/manpages/jammy/en/man1/ttyd.1.html
+RUN wget https://github.com/tsl0922/ttyd/releases/download/1.7.7/ttyd.x86_64 -O /usr/bin/bb-terminal \
+    && chmod +x /usr/bin/bb-terminal
+
+# Copy files from directory
+ADD ./mounts/image.env /tmp/image.env
+
 # rename binaries to aliases  (asciinema->bb-logger, ttyd->bb-terminal, nvim->vim)
+# RUN mv /usr/bin/ttyd /usr/bin/bb-terminal
 RUN mv /usr/bin/asciinema /usr/bin/bb-logger
-RUN mv /usr/bin/ttyd /usr/bin/bb-terminal
 RUN mv /usr/bin/websocat /usr/bin/bb-streamer
 RUN mv /usr/bin/nvim /usr/bin/vim
 

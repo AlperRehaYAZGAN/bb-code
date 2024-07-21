@@ -102,7 +102,7 @@ ENV TERM=xterm \
 ADD ./mounts/bash.bashrc ${HOME}/.bashrc
 ADD ./mounts/bash.bashrc ${HOME}/.bash_profile
 
-ADD ./mounts/motd /etc/motd
+ADD https://gitlab.bulutbilisimciler.com/bb-public/playground-init/-/raw/main/motd /etc/motd
 COPY --from=build /tmp/websocat/target/release/websocat /usr/bin/websocat
 
 # Update and upgrade
@@ -141,12 +141,8 @@ RUN set -eux \
 RUN wget https://github.com/tsl0922/ttyd/releases/download/1.7.7/ttyd.x86_64 -O /usr/bin/bb-terminal \
     && chmod +x /usr/bin/bb-terminal
 
-# Install Docker
-RUN curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh 
-ADD https://raw.githubusercontent.com/docker/docker-ce/master/components/cli/contrib/completion/bash/docker /etc/bash_completion.d/docker.sh
-# In new Docker versions, docker-compose comes built-in with docker. "docker compose" is the new command. "docker-compose" is deprecated. Use alias
-RUN echo "alias docker-compose='docker compose'" >> /root/.bashrc \
-    && echo "alias docker-compose='docker compose'" >> /etc/bash.bashrc
+# Copy files from directory
+ADD ./mounts/image.env /tmp/image.env
 
 # Clear cache and unnecessary files and apt cache
 RUN rm -rf /var/cache/apt/* \

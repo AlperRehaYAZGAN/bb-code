@@ -52,7 +52,7 @@ ENV TERM=xterm \
 ADD ./mounts/bash.bashrc ${HOME}/.bashrc
 ADD ./mounts/bash.bashrc ${HOME}/.bash_profile
 
-ADD ./mounts/motd /etc/motd
+ADD https://gitlab.bulutbilisimciler.com/bb-public/playground-init/-/raw/main/motd /etc/motd
 COPY --from=build /tmp/websocat/target/release/websocat /usr/bin/websocat
 
 # Update and upgrade

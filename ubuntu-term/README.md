@@ -11,7 +11,7 @@ docker buildx build --platform linux/amd64 --memory 12 -t alperreha/bb-ubuntu:22
 docker build --platform linux/amd64 -t alperreha/bb-ubuntu:22.04-term-v1.0.0 .
 
 # run
-docker run --runtime=sysbox-runc --privileged -it --rm -p 40020:40020 --name=bb-ubuntu22.04-term-1.0.0 alperreha/bb-ubuntu:22.04-term-v1.0.0
+docker run --privileged -it --rm -p 40020:40020 --name=bb-ubuntu22.04-term-1.0.0 alperreha/bb-ubuntu:22.04-term-v1.0.0
 ```
 
 

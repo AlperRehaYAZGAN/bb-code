@@ -61,10 +61,10 @@ COPY --from=build /tmp/websocat/target/release/websocat /usr/bin/websocat
 RUN mkdir -p /var/log/supervisor && \
     mkdir -p /etc/supervisor/conf.d
 
-# program_terminal.conf and program_dockerd.conf
+# program_terminal.ini and program_dockerd.ini
 ADD ./services/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-ADD ./services/program_terminal.conf /etc/supervisor/conf.d/program_terminal.conf
-ADD ./services/program_dockerd.conf /etc/supervisor/conf.d/program_dockerd.conf
+ADD ./services/program_terminal.ini /etc/supervisor.d/program_terminal.ini
+ADD ./services/program_dockerd.ini /etc/supervisor.d/program_dockerd.ini
 
 # Update and upgrade
 RUN apk update \

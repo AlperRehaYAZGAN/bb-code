@@ -59,12 +59,10 @@ COPY --from=build /tmp/websocat/target/release/websocat /usr/bin/websocat
 # supervisor confs
 # supervisord
 RUN mkdir -p /var/log/supervisor && \
-    mkdir -p /etc/supervisor/conf.d
+    mkdir -p /etc/supervisor.d
 
-# program_terminal.ini and program_dockerd.ini
-ADD ./services/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-ADD ./services/program_terminal.ini /etc/supervisor.d/program_terminal.ini
-ADD ./services/program_dockerd.ini /etc/supervisor.d/program_dockerd.ini
+# move all services to supervisor conf.d
+ADD ./services/* /etc/supervisor.d/*
 
 # Update and upgrade
 RUN apk update \
@@ -103,7 +101,6 @@ RUN set -eux \
     screen \
     # nestybox multiple services
     supervisor \
-    docker \
     " \
     && apk add --no-cache ${PACKAGES}
 

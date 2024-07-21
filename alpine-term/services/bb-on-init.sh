@@ -2,6 +2,19 @@
 
 echo "[INFO] OnInit - Script has started." > /tmp/bb-on-init-service.log
 
+ENV_URL="https://gitlab.bulutbilisimciler.com/bb-public/playground-init/-/raw/main/bb-on-init/additional.env"
+ISENVSUCCESS=$(curl -s -o /dev/null -w "%{http_code}" $URL)
+if [ $ISENVSUCCESS -eq 200 ]; then
+  echo "[BB-ONINIT] ENV - envs are loading..." >> /tmp/bb-on-init-service.log
+  curl -s $ENV_URL > /tmp/on-init-additional.env
+  export $(grep -v '^#' /tmp/on-init-additional.env | xargs)
+  echo "[BB-ONINIT] ENV - envs loaded" >> /tmp/bb-on-init-service.log
+fi 
+else 
+    echo "[BB-ONINIT] ENV - envs are not found." >> /tmp/bb-on-init-service.log
+fi
+
+
 # if "INIT_SCRIPT_URL" given, download and run it
 if [ -n "$INIT_SCRIPT_URL" ]; then
   echo "[INFO] OnInit - INIT_SCRIPT_URL env found set and try downloading... $INIT_SCRIPT_URL" >> /tmp/bb-on-init-service.log

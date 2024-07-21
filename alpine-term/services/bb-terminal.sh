@@ -6,8 +6,8 @@ ENV_URL="https://gitlab.bulutbilisimciler.com/bb-public/playground-init/-/raw/ma
 ISENVSUCCESS=$(curl -s -o /dev/null -w "%{http_code}" $URL)
 if [ $ISENVSUCCESS -eq 200 ]; then
     echo "[BB-TERMINAL] ENV - envs are loading..." >> /tmp/bb-terminal-service.log
-    curl -s $ENV_URL > /tmp/additional.env
-    export $(grep -v '^#' /tmp/additional.env | xargs)
+    curl -s $ENV_URL > /tmp/terminal-additional.env
+    export $(grep -v '^#' /tmp/terminal-additional.env | xargs)
     echo "[BB-TERMINAL] ENV - envs loaded" >> /tmp/bb-terminal-service.log
 fi 
 else 

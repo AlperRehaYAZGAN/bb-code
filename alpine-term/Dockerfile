@@ -45,6 +45,7 @@ ENV TERM=xterm \
 # Copy files from directory
 # docker-entrypoint.sh
 ADD ./mounts/docker-entrypoint.sh /usr/bin/docker-entrypoint.sh
+RUN chmod +x /usr/bin/docker-entrypoint.sh
 
 # bash.bashrc
 ADD ./mounts/bash.bashrc ${HOME}/.bashrc

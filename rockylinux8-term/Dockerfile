@@ -126,6 +126,12 @@ RUN set -eux \
     screen \
     " \
     && dnf install -y ${PACKAGES} \
+    && rm -rf /var/cache/dnf/* \
+    /tmp/* \
+    /var/log/* \
+    /var/tmp/*  \
+    /usr/share/doc/* \
+    /usr/share/man/* \ 
     && dnf clean all
 
 # Install ttyd manually due to Ubuntu apt installs old version. 
@@ -134,14 +140,6 @@ RUN set -eux \
 RUN wget https://github.com/tsl0922/ttyd/releases/download/1.7.7/ttyd.x86_64 -O /usr/bin/bb-terminal \
     && chmod +x /usr/bin/bb-terminal
 
-# Clear cache and unnecessary files and dnf cache
-RUN rm -rf /var/cache/dnf/* \
-    /tmp/* \
-    /var/log/* \
-    /var/tmp/*  \
-    /usr/share/doc/* \
-    /usr/share/man/* \ 
-    && dnf clean all
 
 # rename binaries to aliases  (asciinema->bb-logger, ttyd->bb-terminal, nvim->vim)
 # RUN mv /usr/bin/ttyd /usr/bin/bb-terminal

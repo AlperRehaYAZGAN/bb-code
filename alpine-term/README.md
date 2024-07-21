@@ -17,6 +17,9 @@ docker run --runtime=sysbox-runc --privileged -it --rm -p 40020:40020 --name=bb-
 
 ### Changelog
 
+- [x] 2.0.0: supervisord improvement added. Now it supports multiple services. 
+  Sample program service files is under "./services" directory.
+
 - [x] 1.0.0: ttyd, websocat, tmux, screen, asciinema, neovim installed and boilerplate ready.
   This release is openrc included and supports "service" commands.
   

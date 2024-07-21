@@ -47,9 +47,20 @@ ENV TERM=xterm \
 ADD ./mounts/bash.bashrc ${HOME}/.bashrc
 ADD ./mounts/bash.bashrc ${HOME}/.bash_profile
 
+# motd and websocat
 ADD ./mounts/motd /root/workspace/motd
 ADD ./mounts/motd /etc/motd
 COPY --from=build /tmp/websocat/target/release/websocat /usr/bin/websocat
+
+# supervisor confs
+# supervisord
+RUN mkdir -p /var/log/supervisor && \
+    mkdir -p /etc/supervisor/conf.d
+
+# program_terminal.conf and program_dockerd.conf
+ADD ./services/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+ADD ./services/program_terminal.conf /etc/supervisor/conf.d/program_terminal.conf
+ADD ./services/program_dockerd.conf /etc/supervisor/conf.d/program_dockerd.conf
 
 # Update and upgrade
 RUN apk update \
@@ -86,6 +97,9 @@ RUN set -eux \
     neovim \
     tmux \
     screen \
+    # nestybox multiple services
+    supervisor \
+    docker \
     " \
     && apk add --no-cache ${PACKAGES}
 
@@ -108,4 +122,4 @@ WORKDIR /root/workspace
 
 # Start the bb-terminal server
 # bash -c while true; do /usr/bin/bb-terminal -p 40020 -m 64 --writable -t disableLeaveAlert=true bash; done
-CMD [ "bash", "-c", "while true; do /usr/bin/bb-terminal -p 40020 -m 64 --writable -t disableLeaveAlert=true bash; done" ]
+# CMD [ "bash", "-c", "while true; do /usr/bin/bb-terminal -p 40020 -m 64 --writable -t disableLeaveAlert=true bash; done" ]

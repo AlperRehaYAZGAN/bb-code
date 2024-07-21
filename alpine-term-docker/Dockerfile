@@ -15,7 +15,10 @@ LABEL org.opencontainers.image.authors="Alper Reha YAZGAN" \
 
 # install docker
 RUN apk update && \
-    apk add --no-cache docker
+    apk add --no-cache docker docker-compose
+
+ADD https://raw.githubusercontent.com/docker/docker-ce/master/components/cli/contrib/completion/bash/docker /etc/bash_completion.d/docker.sh
+
 
 # move all services to supervisor conf.d
 ADD ./services/* /etc/supervisor.d/*

@@ -20,6 +20,7 @@ RUN dnf install epel-release -y \
 
 # Install rust
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+RUN source $HOME/.cargo/env
 
 # use temporary directory
 WORKDIR /tmp

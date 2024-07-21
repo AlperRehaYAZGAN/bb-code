@@ -102,19 +102,19 @@ RUN mkdir -p /root/workspace
 WORKDIR /root/workspace
 
 # Service 1 -1 - on-init-helper service
-COPY ./services/bb-on-init-service.sh /usr/bin/
+COPY ./services/bb-on-init.sh /usr/bin/
 COPY ./services/bb-on-init.service /lib/systemd/system/
 
 # Service 1 -2 - Link service to systemd
-RUN chmod +x /usr/bin/bb-on-init-service.sh && \
+RUN chmod +x /usr/bin/bb-on-init.sh && \
     ln -sf /lib/systemd/system/bb-on-init.service \
     /etc/systemd/system/multi-user.target.wants/bb-on-init.service
 
 # Service 2 - terminal service
-COPY ./services/bb-terminal-service.sh /usr/bin/
+COPY ./services/bb-terminal.sh /usr/bin/
 COPY ./services/bb-terminal.service /lib/systemd/system/
 
 # Link service to systemd
-RUN chmod +x /usr/bin/bb-terminal-service.sh && \
+RUN chmod +x /usr/bin/bb-terminal.sh && \
     ln -sf /lib/systemd/system/bb-terminal.service \
     /etc/systemd/system/multi-user.target.wants/bb-terminal.service

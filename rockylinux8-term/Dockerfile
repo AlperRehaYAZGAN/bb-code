@@ -93,7 +93,7 @@ ENV TERM=xterm \
 # bash.bashrc and image.env
 ADD ./mounts/bash.bashrc ${HOME}/.bashrc
 ADD ./mounts/bash.bashrc ${HOME}/.bash_profile
-ADD ./mounts/image.env /tmp/env/image.env
+ADD ./mounts/image.env /tmp/image.env
 
 ADD ./mounts/motd /etc/motd
 COPY --from=build /tmp/websocat/target/release/websocat /usr/bin/websocat
@@ -118,6 +118,7 @@ RUN set -eux \
     openssl-devel \
     # -- custom \
     jq \
+    findutils \
     # -- logging \
     openssh-clients \
     asciinema \

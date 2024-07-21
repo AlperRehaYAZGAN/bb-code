@@ -5,7 +5,7 @@ export TERM=xterm-256color
 
 # set working directory /root/workspace
 # cd /root/workspace
-export $(grep -v '^#' /tmp/env/image.env | xargs)
+export $(grep -v '^#' /tmp/image.env | xargs)
 export $(grep -v '^#' /tmp/env/bb.env | xargs)
 
 # start terminal with nohup

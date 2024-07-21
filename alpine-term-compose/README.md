@@ -11,7 +11,7 @@ docker buildx build --platform linux/amd64 --memory 12 -t alperreha/bb-alpine:3.
 docker build --platform linux/amd64 -t alperreha/bb-alpine:3.19-term-compose-v1.0.0 .
 
 # run
-docker run --privileged -it --rm -p 40020:40020 --name=bb-alpine3.19-term-compose-1.0.0 alperreha/bb-alpine:3.19-term-compose-v1.0.0 .
+docker run --privileged -it --rm -p 40020:40020 --name=bb-alpine3.19-term-compose-1.0.0 alperreha/bb-alpine:3.19-term-compose-v1.0.0
 ```
 
 

@@ -103,10 +103,10 @@ RUN dnf update -y && \
 
 # Install packages
 # IGNORE: additional package not required right now: python3, vim, gcc, g++, alpine-sdk 
+RUN dnf install epel-release -y
 RUN set -eux \
     && PACKAGES=" \
     # -- built-in \
-    epel-release \
     bash \
     tzdata \
     wget \

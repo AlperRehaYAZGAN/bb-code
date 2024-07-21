@@ -136,9 +136,11 @@ RUN wget https://github.com/tsl0922/ttyd/releases/download/1.7.7/ttyd.x86_64 -O 
 
 # Clear cache and unnecessary files and dnf cache
 RUN rm -rf /var/cache/dnf/* \
-    && rm -rf /tmp/* \
-    && rm -rf /var/tmp/* \
-    # && rm -rf /usr/share/doc/* \
+    /tmp/* \
+    /var/log/* \
+    /var/tmp/*  \
+    /usr/share/doc/* \
+    /usr/share/man/* \ 
     && dnf clean all
 
 # rename binaries to aliases  (asciinema->bb-logger, ttyd->bb-terminal, nvim->vim)

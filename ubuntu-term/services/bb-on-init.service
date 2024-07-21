@@ -1,6 +1,6 @@
 [Unit]
 Description=bulutbilisimciler-on-init-helper-v1.0.0
-After=docker.service
+After=network.target
 StartLimitIntervalSec=0
 
 [Service]

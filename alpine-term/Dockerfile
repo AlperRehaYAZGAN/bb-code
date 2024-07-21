@@ -62,7 +62,7 @@ RUN mkdir -p /var/log/supervisor && \
     mkdir -p /etc/supervisor.d
 
 # move all services to supervisor conf.d
-ADD ./services/* /etc/supervisor.d/*
+ADD ./services/* /etc/supervisor.d/
 
 # Update and upgrade
 RUN apk update \

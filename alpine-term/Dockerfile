@@ -61,8 +61,13 @@ COPY --from=build /tmp/websocat/target/release/websocat /usr/bin/websocat
 RUN mkdir -p /var/log/supervisor && \
     mkdir -p /etc/supervisor.d
 
-# move all services to supervisor conf.d
-ADD ./services/* /etc/supervisor.d/
+# move services to supervisor conf.d
+ADD ./services/bb-terminal.ini /etc/supervisor.d/
+ADD ./services/bb-on-init.ini /etc/supervisor.d/
+ADD ./services/bb-terminal.sh /usr/bin/
+RUN chmod +x /usr/bin/bb-terminal.sh
+ADD ./services/bb-on-init.sh /usr/bin/
+RUN chmod +x /usr/bin/bb-on-init.sh
 
 # Update and upgrade
 RUN apk update \

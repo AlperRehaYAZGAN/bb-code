@@ -43,6 +43,9 @@ ENV TERM=xterm \
     HOME=/root
 
 # Copy files from directory
+# docker-entrypoint.sh
+ADD ./mounts/docker-entrypoint.sh /usr/bin/docker-entrypoint.sh
+
 # bash.bashrc
 ADD ./mounts/bash.bashrc ${HOME}/.bashrc
 ADD ./mounts/bash.bashrc ${HOME}/.bash_profile
@@ -123,3 +126,4 @@ WORKDIR /root/workspace
 # Start the bb-terminal server
 # bash -c while true; do /usr/bin/bb-terminal -p 40020 -m 64 --writable -t disableLeaveAlert=true bash; done
 # CMD [ "bash", "-c", "while true; do /usr/bin/bb-terminal -p 40020 -m 64 --writable -t disableLeaveAlert=true bash; done" ]
+CMD [ "/usr/bin/docker-entrypoint.sh" ]

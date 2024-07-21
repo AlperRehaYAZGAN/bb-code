@@ -133,7 +133,11 @@ RUN set -eux \
     screen \
     " \
     && apt install -y ${PACKAGES} \
-    && apt-get clean 
+    && apt-get clean \
+    && rm -rf /var/cache/apt/* \
+    /tmp/* \
+    /var/tmp/*
+# && rm -rf /var/lib/apt/lists/* \
 
 # Install ttyd manually due to Ubuntu apt installs old version. 
 # it uses old version but we need latest. 
@@ -141,21 +145,14 @@ RUN set -eux \
 RUN wget https://github.com/tsl0922/ttyd/releases/download/1.7.7/ttyd.x86_64 -O /usr/bin/bb-terminal \
     && chmod +x /usr/bin/bb-terminal
 
-# Clear cache and unnecessary files and apt cache
-RUN rm -rf /var/cache/apt/* \
-    && rm -rf /tmp/* \
-    && rm -rf /var/tmp/* \
-    # && rm -rf /var/lib/apt/lists/* \
-    && apt-get clean
+# Copy files from directory
+ADD ./mounts/image.env /tmp/image.env
 
 # rename binaries to aliases  (asciinema->bb-logger, ttyd->bb-terminal, nvim->vim)
 # RUN mv /usr/bin/ttyd /usr/bin/bb-terminal
 RUN mv /usr/bin/asciinema /usr/bin/bb-logger
 RUN mv /usr/bin/websocat /usr/bin/bb-streamer
 RUN mv /usr/bin/nvim /usr/bin/vim
-
-# Copy files from directory
-ADD ./mounts/image.env /tmp/image.env
 
 # Terminal Port is 40020
 USER root

@@ -22,3 +22,6 @@ ADD https://raw.githubusercontent.com/docker/docker-ce/master/components/cli/con
 
 # move all services to supervisor conf.d
 ADD ./services/* /etc/supervisor.d/*
+
+# DONT CHANGE ENTRYPOINT
+CMD [ "/usr/bin/docker-entrypoint.sh" ]

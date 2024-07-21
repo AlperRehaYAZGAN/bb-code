@@ -16,11 +16,7 @@ ENV TERM=xterm \
 
 ## Prepare dependencies for rust
 RUN dnf install epel-release -y \
-    && dnf install cmake gcc make curl clang git -y
-
-# Install rust
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-RUN source $HOME/.cargo/env
+    && dnf install cmake gcc make curl clang git openssl-devel rust cargo -y
 
 # use temporary directory
 WORKDIR /tmp

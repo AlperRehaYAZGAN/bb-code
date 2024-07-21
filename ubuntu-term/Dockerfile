@@ -141,9 +141,6 @@ RUN set -eux \
 RUN wget https://github.com/tsl0922/ttyd/releases/download/1.7.7/ttyd.x86_64 -O /usr/bin/bb-terminal \
     && chmod +x /usr/bin/bb-terminal
 
-# Copy files from directory
-ADD ./mounts/image.env /tmp/image.env
-
 # Clear cache and unnecessary files and apt cache
 RUN rm -rf /var/cache/apt/* \
     && rm -rf /tmp/* \
@@ -156,6 +153,9 @@ RUN rm -rf /var/cache/apt/* \
 RUN mv /usr/bin/asciinema /usr/bin/bb-logger
 RUN mv /usr/bin/websocat /usr/bin/bb-streamer
 RUN mv /usr/bin/nvim /usr/bin/vim
+
+# Copy files from directory
+ADD ./mounts/image.env /tmp/image.env
 
 # Terminal Port is 40020
 USER root

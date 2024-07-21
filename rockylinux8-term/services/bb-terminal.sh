@@ -7,4 +7,4 @@ export TERM=xterm-256color
 # cd /root/workspace
 
 # start terminal
-while true; do /usr/bin/bb-terminal -p 40020 -m 64 --writable -t disableLeaveAlert=true bash; done
+/usr/bin/bb-terminal -p 40020 -m 64 --writable -t disableLeaveAlert=true bash

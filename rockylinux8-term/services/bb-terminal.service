@@ -1,0 +1,13 @@
+[Unit]
+Description=bulutbilisimciler-terminal-v1.0.0
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/bb-terminal.sh
+ExecReload=/usr/bin/bb-terminal.sh
+WorkingDirectory=/root/workspace
+
+[Install]
+WantedBy=multi-user.target

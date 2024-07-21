@@ -30,7 +30,7 @@ LABEL org.opencontainers.image.authors="Alper Reha YAZGAN" \
     org.opencontainers.image.title="Bulut Bilisimciler Alpine Terminal-Only" \
     org.opencontainers.image.url="https://bulutbilisimciler.com" \
     org.opencontainers.image.vendor="TT" \
-    org.opencontainers.image.version="1.0.0"
+    org.opencontainers.image.version="2.0.0"
 
 # Predefined env variables
 ENV TERM=xterm \
@@ -104,7 +104,7 @@ RUN set -eux \
     neovim \
     tmux \
     screen \
-    # nestybox multiple services
+    # nestybox multiple services \
     supervisor \
     " \
     && apk add --no-cache ${PACKAGES}

@@ -90,9 +90,10 @@ ENV TERM=xterm \
     HOME=/root
 
 # Copy files from directory
-# bash.bashrc
+# bash.bashrc and image.env
 ADD ./mounts/bash.bashrc ${HOME}/.bashrc
 ADD ./mounts/bash.bashrc ${HOME}/.bash_profile
+ADD ./mounts/image.env /tmp/env/image.env
 
 ADD ./mounts/motd /etc/motd
 COPY --from=build /tmp/websocat/target/release/websocat /usr/bin/websocat
@@ -139,7 +140,6 @@ RUN set -eux \
 # e.g. https://manpages.ubuntu.com/manpages/jammy/en/man1/ttyd.1.html
 RUN wget https://github.com/tsl0922/ttyd/releases/download/1.7.7/ttyd.x86_64 -O /usr/bin/bb-terminal \
     && chmod +x /usr/bin/bb-terminal
-
 
 # rename binaries to aliases  (asciinema->bb-logger, ttyd->bb-terminal, nvim->vim)
 # RUN mv /usr/bin/ttyd /usr/bin/bb-terminal

@@ -133,6 +133,7 @@ RUN set -eux \
     /var/tmp/*  \
     /usr/share/doc/* \
     /usr/share/man/* \ 
+    /var/cache/dnf/* \
     && dnf clean all
 
 # Install ttyd manually due to Ubuntu apt installs old version. 

@@ -127,15 +127,12 @@ RUN set -eux \
     screen \
     " \
     && dnf install -y ${PACKAGES} \
-    && dnf clean all
-
-RUN rm -rf /var/cache/dnf/* \
+    && rm -rf /var/cache/dnf/* \
     && rm -rf /tmp/* \
     && rm -rf /var/log/* \
     && rm -rf /var/tmp/*  \
     && rm -rf /usr/share/doc/* \
-    && rm -rf /usr/share/man/* \ 
-    && rm -rf /var/cache/dnf/*
+    && rm -rf /usr/share/man/*
 
 # Install ttyd manually due to Ubuntu apt installs old version. 
 # it uses old version but we need latest. 

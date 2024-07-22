@@ -135,7 +135,6 @@ RUN set -eux \
     && apt install -y ${PACKAGES} \
     && apt-get clean \
     && rm -rf /var/cache/apt/* \
-    /tmp/* \
     /var/tmp/*
 # && rm -rf /var/lib/apt/lists/* \
 

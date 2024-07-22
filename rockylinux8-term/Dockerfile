@@ -128,12 +128,12 @@ RUN set -eux \
     " \
     && dnf install -y ${PACKAGES} \
     && rm -rf /var/cache/dnf/* \
-    /tmp/* \
-    /var/log/* \
-    /var/tmp/*  \
-    /usr/share/doc/* \
-    /usr/share/man/* \ 
-    /var/cache/dnf/* \
+    && rm -rf /tmp/* \
+    && rm -rf /var/log/* \
+    && rm -rf /var/tmp/*  \
+    && rm -rf /usr/share/doc/* \
+    && rm -rf /usr/share/man/* \ 
+    && rm -rf /var/cache/dnf/* \
     && dnf clean all
 
 # Install ttyd manually due to Ubuntu apt installs old version. 

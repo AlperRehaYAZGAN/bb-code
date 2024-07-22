@@ -145,7 +145,7 @@ RUN wget https://github.com/tsl0922/ttyd/releases/download/1.7.7/ttyd.x86_64 -O 
     && chmod +x /usr/bin/bb-terminal
 
 # Copy files from directory
-ADD ./mounts/image.env /tmp/image.env
+COPY ./mounts/image.env /tmp/
 
 # rename binaries to aliases  (asciinema->bb-logger, ttyd->bb-terminal, nvim->vim)
 # RUN mv /usr/bin/ttyd /usr/bin/bb-terminal

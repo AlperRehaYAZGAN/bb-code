@@ -25,7 +25,7 @@ RUN apt-get update && \
     software-properties-common
 
 # env from build args
-ARG OS=xUbuntu_22.04
+ARG OS=xUbuntu_20.04
 ARG CRIO_VERSION=1.30.3
 
 

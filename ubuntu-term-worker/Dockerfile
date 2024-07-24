@@ -29,28 +29,19 @@ ARG OS=xUbuntu_20.04
 ARG CRIO_VERSION=1.30.3
 
 
-# Add CRI-O repository
-RUN echo "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/$OS/ /"| sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list \
-    echo "deb http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/$CRIO_VERSION/$OS/ /"|sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable:cri-o:$CRIO_VERSION.list
+# Add CRI-O GPG key
+RUN curl -fsSL https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/$OS_VERSION/Release.key | sudo gpg --dearmor -o /usr/share/keyrings/libcontainers-archive-keyring.gpg \
+    curl -fsSL https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/$CRIO_VERSION/$OS_VERSION/Release.key | sudo gpg --dearmor -o /usr/share/keyrings/libcontainers-crio-archive-keyring.gpg
 
-# Add CRI-O repository key
-RUN curl -L https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable:cri-o:$CRIO_VERSION/$OS/Release.key | apt-key add - \
-    curl -L https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/$OS/Release.key | apt-key add -
+# Add CRI-O repository
+RUN echo "deb [signed-by=/usr/share/keyrings/libcontainers-archive-keyring.gpg] https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/$OS_VERSION/ /" | sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list \
+    echo "deb [signed-by=/usr/share/keyrings/libcontainers-crio-archive-keyring.gpg] https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/$CRIO_VERSION/$OS_VERSION/ /" | sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable:cri-o:$CRIO_VERSION.list
 
 # install cri-o
 RUN apt-get update && \
     apt install -y \ 
     cri-o cri-o-runc cri-tools \
     containernetworking-plugins
-
-
-# Uncomment network_dir & plugin_dirs section and also add ‘/usr/lib/cni/’ under plugin_dirs section
-RUN sed -i 's/#network_dir = "\/etc\/cni\/net.d"/network_dir = "\/etc\/cni\/net.d"/g' /etc/crio/crio.conf \
-    sed -i 's/#plugin_dirs = \["\/usr\/lib\/cni\/"\]/plugin_dirs = \["\/usr\/lib\/cni\/"\]/g' /etc/crio/crio.conf
-
-# install kubectl
-RUN apt-get update && \
-    apt-get install -y kubectl
 
 # remove unnecessary files in ubuntu before commit
 RUN rm -rf /var/cache/apt/* \

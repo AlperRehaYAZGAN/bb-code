@@ -43,6 +43,8 @@ RUN apt-get update && \
     cri-o cri-o-runc cri-tools \
     containernetworking-plugins
 
+RUN systemctl enable crio
+
 # remove unnecessary files in ubuntu before commit
 RUN rm -rf /var/cache/apt/* \
     /var/tmp/* \

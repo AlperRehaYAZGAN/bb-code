@@ -26,7 +26,7 @@ RUN apt-get update && \
 
 # env from build args
 ARG OS_VERSION=xUbuntu_20.04
-ARG CRIO_VERSION=1.27
+ARG CRIO_VERSION=1.23
 
 
 # Add CRI-O GPG key

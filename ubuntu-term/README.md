@@ -12,7 +12,11 @@ This repository uses the following tools for building:
 You need to install these tools to build the images. Ubuntu 22.04 machine is required to build the images due to nestybox/sysbox restrictions.  
 
 ```bash
-# install docker ...
+# add group
+usermod -aG docker ubuntu
+
+# switch user
+su - ubuntu
 
 # install sysbox requirements
 sudo apt install jq

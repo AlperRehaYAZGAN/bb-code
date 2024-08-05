@@ -42,8 +42,6 @@ cd bb-code
 # start building.
 cd ubuntu-term-nix
 
-# buildx
-docker buildx build --platform linux/amd64 --memory 12 -t alperreha/bb-ubuntu:22.04-term-nix-v1.0.0 .
 # build
 docker build --platform linux/amd64 -t alperreha/bb-ubuntu:22.04-term-nix-v1.0.0 .
 

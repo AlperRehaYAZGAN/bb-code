@@ -17,7 +17,7 @@ LABEL org.opencontainers.image.authors="Alper Reha YAZGAN" \
 ENV DEBIAN_FRONTEND=noninteractive \
     TZ="Europe/Istanbul"
 
-RUN echo "export PS1='\[\033[01;32m\]\u \[\033[01;34m\]\w\[\033[00m\] $ '" >> /etc/skel/.bashrc
+RUN echo "export PS1='\[\033[01;32m\]\u \[\033[01;34m\]\w\[\033[00m\] $ '" >> /etc/bash.bashrc
 
 # Install Postgres required packages
 RUN apt-get update && \

@@ -24,22 +24,15 @@ RUN apt-get update && \
     ca-certificates \
     postgresql-common
 
-# Import the repository signing key:
-RUN sudo install -d /usr/share/postgresql-common/pgdg \
-    && sudo curl -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc --fail https://www.postgresql.org/media/keys/ACCC4CF8.asc \
-    # Create the repository configuration file:
-    && sudo sh -c 'echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'  
-
-# Update and install postgres15 and contrib
-RUN apt update -y \
-    && apt -y install postgresql-15
+# update and install postgresql
+RUN apt-get -y install postgresql postgresql-contrib
 
 # Set the default postgres user password
 RUN echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/$(ls /etc/postgresql)/main/pg_hba.conf \
     && echo "listen_addresses='*'" >> /etc/postgresql/$(ls /etc/postgresql)/main/postgresql.conf
 
 # Enable postgresql service
-RUN systemctl enable postgresql-15
+RUN systemctl enable postgresql
 
 # remove unnecessary files in ubuntu before commit
 RUN rm -rf /var/cache/apt/* \

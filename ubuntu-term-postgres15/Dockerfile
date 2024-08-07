@@ -32,7 +32,7 @@ RUN sudo install -d /usr/share/postgresql-common/pgdg \
 
 # Update and install postgres15 and contrib
 RUN apt update -y \
-    && apt -y install postgresql-15 postgresql-contrib
+    && apt -y install postgresql-15
 
 # Set the default postgres user password
 RUN echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/$(ls /etc/postgresql)/main/pg_hba.conf \

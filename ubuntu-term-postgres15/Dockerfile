@@ -24,6 +24,8 @@ RUN apt-get update && \
     ca-certificates \
     postgresql-common
 
+RUN sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh
+
 # update and install postgresql
 RUN apt-get -y install postgresql-15 postgresql-contrib
 

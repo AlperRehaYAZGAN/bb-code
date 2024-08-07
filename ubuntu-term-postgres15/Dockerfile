@@ -24,7 +24,10 @@ RUN apt-get update && \
     ca-certificates \
     postgresql-common
 
-RUN sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh
+RUN sudo install -d /usr/share/postgresql-common/pgdg \
+    && sudo curl -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc --fail https://www.postgresql.org/media/keys/ACCC4CF8.asc \
+    && sudo sh -c 'echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list' \
+    && sudo apt update -y
 
 # update and install postgresql
 RUN apt-get -y install postgresql-15 postgresql-contrib

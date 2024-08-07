@@ -1,8 +1,7 @@
 # Dockerfile
-# Author: Alper Reha YAZGAN
-# alperreha/bb-ubuntu:22.04-term-v1.0.0
+# Author: Ahmet Mustan
+# alperreha/bb-pardus23-term-v1.0.0
 FROM node:18 as build
-
 ## ALpine
 RUN apt-get update && \
     apt-get install -y make gcc g++ python3 libx11-dev libxkbfile-dev libc-dev libssl-dev curl gnupg git openssl rustc cargo
@@ -21,10 +20,9 @@ WORKDIR /tmp/websocat
 
 RUN cargo build --release --features=ssl
 
-# stage 2 - deploy
-# https://github.com/nestybox/dockerfiles/blob/master/ubuntu-jammy-systemd/Dockerfile
+# stage 2 - deploy
 ###################################### Boilerplate START ######################################
-FROM ubuntu:jammy as deploy
+FROM pardus/yirmiuc:1 as deploy
 
 #
 # Systemd installation
@@ -73,15 +71,13 @@ RUN systemctl mask systemd-udevd.service \
 STOPSIGNAL SIGRTMIN+3
 
 # BELOW CODE IS COMMENTED: This image is 2 years old and not maintained. Re-create ,mage from Dockerfile
-# https://github.com/nestybox/dockerfiles/blob/master/ubuntu-jammy-systemd/Dockerfile
-# FROM nestybox/ubuntu-jammy-systemd:latest as deploy
 ###################################### Boilerplate END ######################################
 
-LABEL org.opencontainers.image.authors="Alper Reha YAZGAN" \
-    org.opencontainers.image.description="Bulut Bilisimciler Hands-on Lab IDE Environment - Ubuntu 22.04 with ttyd, asciinema, websocat and some utilities" \
+LABEL org.opencontainers.image.authors="Ahmet Mustan" \
+    org.opencontainers.image.description="Bulut Bilisimciler Hands-on Lab IDE Environment - Pardus 23 with ttyd, asciinema, websocat and some utilities" \
     org.opencontainers.image.documentation="https://bulutbilisimciler.com" \
     org.opencontainers.image.licenses="MIT" \
-    org.opencontainers.image.title="Bulut Bilisimciler Ubuntu 22.04 Terminal" \
+    org.opencontainers.image.title="Bulut Bilisimciler Pardus 23 Terminal" \
     org.opencontainers.image.url="https://bulutbilisimciler.com" \
     org.opencontainers.image.vendor="TT" \
     org.opencontainers.image.version="1.0.0"
@@ -110,7 +106,7 @@ RUN apt-get update -y && \
     apt-get upgrade -y
 
 # Install packages
-# IGNORE: additional package not required right now: python3, vim, gcc, g++, alpine-sdk 
+# IGNORE: additional package not required right now: python3, vim, gcc, g++, alpine-sdk
 RUN set -eux \
     && PACKAGES=" \
     # -- built-in \
@@ -138,9 +134,7 @@ RUN set -eux \
     /var/tmp/*
 # && rm -rf /var/lib/apt/lists/* \
 
-# Install ttyd manually due to Ubuntu apt installs old version. 
 # it uses old version but we need latest. 
-# e.g. https://manpages.ubuntu.com/manpages/jammy/en/man1/ttyd.1.html
 RUN wget https://github.com/tsl0922/ttyd/releases/download/1.7.7/ttyd.x86_64 -O /usr/bin/bb-terminal \
     && chmod +x /usr/bin/bb-terminal
 
@@ -160,7 +154,7 @@ EXPOSE 40020
 RUN mkdir -p /root/workspace
 WORKDIR /root/workspace
 
-# Service 1 -1 - on-init-helper service
+# Service 1 -1 - on-init-helper service
 COPY ./services/bb-on-init.sh /usr/bin/
 COPY ./services/bb-on-init.service /lib/systemd/system/
 

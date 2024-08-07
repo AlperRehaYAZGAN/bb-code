@@ -24,14 +24,8 @@ RUN apt-get update && \
     ca-certificates \
     postgresql-common
 
-RUN sudo install -d /usr/share/postgresql-common/pgdg \
-    && sudo curl -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc --fail https://www.postgresql.org/media/keys/ACCC4CF8.asc \
-    # 2024-08-07 postgresql website script'i lsb_release komutunu çalıştırıken hata verdi. Bu sebeple manuel jammy olarak giriyoruz.
-    && sudo sh -c 'echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt/jammy-pgdg main" > /etc/apt/sources.list.d/pgdg.list' \
-    && sudo apt update -y
-
 # update and install postgresql
-RUN apt-get -y install postgresql-15 postgresql-contrib
+RUN apt-get -y install postgresql postgresql-contrib
 
 # Set the default postgres user password
 RUN echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/$(ls /etc/postgresql)/main/pg_hba.conf \

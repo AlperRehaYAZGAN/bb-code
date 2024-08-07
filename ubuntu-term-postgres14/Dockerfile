@@ -17,6 +17,8 @@ LABEL org.opencontainers.image.authors="Alper Reha YAZGAN" \
 ENV DEBIAN_FRONTEND=noninteractive \
     TZ="Europe/Istanbul"
 
+RUN echo "export PS1='\[\033[01;32m\]\u \[\033[01;34m\]\w\[\033[00m\] $ '" >> /etc/skel/.bashrc
+
 # Install Postgres required packages
 RUN apt-get update && \
     apt-get install -y \ 
@@ -29,8 +31,7 @@ RUN apt-get -y install postgresql postgresql-contrib
 
 # Set the default postgres user password
 RUN echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/$(ls /etc/postgresql)/main/pg_hba.conf \
-    && echo "listen_addresses='*'" >> /etc/postgresql/$(ls /etc/postgresql)/main/postgresql.conf \
-    && echo "export PS1='\[\033[01;32m\]\u \[\033[01;34m\]\w\[\033[00m\] $ '" >> /var/lib/postgresql/.bashrc
+    && echo "listen_addresses='*'" >> /etc/postgresql/$(ls /etc/postgresql)/main/postgresql.conf
 
 # Enable postgresql service
 RUN systemctl enable postgresql

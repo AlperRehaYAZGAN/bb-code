@@ -1,4 +1,4 @@
-### ubuntu-term-postgres15
+### ubuntu-term-postgres14
 
 Everything is same with base ubuntu-term image. But in addition, it has apt postgres installed and systemctl enabled.
 
@@ -44,15 +44,15 @@ cd bb-code
 
 ```bash
 # start building.
-cd ubuntu-term-postgres15
+cd ubuntu-term-postgres14
 
 # buildx
-docker buildx build --platform linux/amd64 --memory 12 -t alperreha/bb-ubuntu:22.04-term-postgres15-v1.0.0 .
+docker buildx build --platform linux/amd64 --memory 12 -t alperreha/bb-ubuntu:22.04-term-postgres14-v1.0.0 .
 # build
-docker build --platform linux/amd64 -t alperreha/bb-ubuntu:22.04-term-postgres15-v1.0.0 .
+docker build --platform linux/amd64 -t alperreha/bb-ubuntu:22.04-term-postgres14-v1.0.0 .
 
 # run
-docker run --privileged -it --rm -p 40020:40020 --name=bb-ubuntu22.04-term-postgres15-1.0.0 alperreha/bb-ubuntu:22.04-term-postgres15-v1.0.0
+docker run --privileged -it --rm -p 40020:40020 --name=bb-ubuntu22.04-term-postgres14-1.0.0 alperreha/bb-ubuntu:22.04-term-postgres14-v1.0.0
 ```
 
 

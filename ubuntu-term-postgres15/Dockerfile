@@ -1,6 +1,6 @@
 # Dockerfile
 # Author: Alper Reha YAZGAN
-# alperreha/bb-ubuntu:22.04-term-worker-v1.0.0
+# alperreha/bb-ubuntu:22.04-term-postgres15-v1.0.0
 # stage 1 - build
 FROM alperreha/bb-ubuntu:22.04-term-v1.0.0
 
@@ -25,11 +25,12 @@ RUN apt-get update && \
     postgresql-common
 
 # update and install postgresql
-RUN apt-get -y install postgresql postgresql-contrib
+RUN apt-get -y install postgresql-15 postgresql-contrib
 
 # Set the default postgres user password
 RUN echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/$(ls /etc/postgresql)/main/pg_hba.conf \
-    && echo "listen_addresses='*'" >> /etc/postgresql/$(ls /etc/postgresql)/main/postgresql.conf
+    && echo "listen_addresses='*'" >> /etc/postgresql/$(ls /etc/postgresql)/main/postgresql.conf \
+    && echo "export PS1='\[\033[01;32m\]\u \[\033[01;34m\]\w\[\033[00m\] $ '" >> /var/lib/postgresql/.bashrc
 
 # Enable postgresql service
 RUN systemctl enable postgresql

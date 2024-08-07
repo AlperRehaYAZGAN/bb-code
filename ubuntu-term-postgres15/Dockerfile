@@ -26,7 +26,8 @@ RUN apt-get update && \
 
 RUN sudo install -d /usr/share/postgresql-common/pgdg \
     && sudo curl -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc --fail https://www.postgresql.org/media/keys/ACCC4CF8.asc \
-    && sudo sh -c 'echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt$(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list' \
+    # 2024-08-07 postgresql website script'i lsb_release komutunu çalıştırıken hata verdi. Bu sebeple manuel jammy olarak giriyoruz.
+    && sudo sh -c 'echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt/jammy-pgdg main" > /etc/apt/sources.list.d/pgdg.list' \
     && sudo apt update -y
 
 # update and install postgresql

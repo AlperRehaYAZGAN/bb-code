@@ -16,7 +16,7 @@ LABEL org.opencontainers.image.authors="Alper Reha YAZGAN" \
 
 
 # Install K3S
-RUN curl -sfL https://get.k3s.io | INSTALL_K3S_SKIP_START=true sh - 
+RUN curl -sfL https://get.k3s.io | INSTALL_K3S_SKIP_START=true INSTALL_K3S_SKIP_ENABLE=true sh - 
 # In new Docker versions, docker-compose comes built-in with docker. "docker compose" is the new command. "docker-compose" is deprecated. Use alias
 RUN echo "alias kubectl='k3s kubectl'" >> /root/.bashrc \
     && echo "alias kubectl='k3s kubectl'" >> /etc/bash.bashrc

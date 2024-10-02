@@ -27,13 +27,16 @@ RUN apt-get update
 
 WORKDIR /tmp
 
+ARG COUCHBASE_NAME="couchbase-server"
+ARG COUCHBASE_VERSION="7.6.3-4200-1"
+
 RUN curl -O https://packages.couchbase.com/releases/couchbase-release/couchbase-release-1.0-noarch.deb
 
 RUN dpkg -i ./couchbase-release-1.0-noarch.deb
 
 # Install Couchbase:7.6 required packages
 RUN apt-get update && \ 
-    apt-get install -y couchbase-server=7.6
+    apt-get install -y couchbase-server=${COUCHBASE_VERSION}
 
 
 RUN systemctl enable couchbase-server

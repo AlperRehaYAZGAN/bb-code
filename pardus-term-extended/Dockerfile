@@ -15,12 +15,12 @@ LABEL org.opencontainers.image.authors="Alper Reha YAZGAN" \
 
 # Update and upgrade
 RUN apt-get update -y && \
-apt-get upgrade -y
+    apt-get upgrade -y
 
 # Install packages
 # IGNORE: additional package not required right now: python3, vim, gcc, g++, alpine-sdk 
 RUN set -eux \
-&& PACKAGES=" \
+    && PACKAGES=" \
     # -- pardus special \
     systemd \
     systemd-sysv \
